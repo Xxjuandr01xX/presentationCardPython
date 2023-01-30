@@ -1,0 +1,11 @@
+{% extends 'index_profile.html' %}
+
+{% block content %}
+    {% for per in perfil %}
+        <h5 class="card-title text-center">{{ per.1 }} {{ per.2 }}</h5>
+        <h6 class="card-subtitle mb-2 text-muted text-center">{{ per.5 }}</h6>
+        <p class="card-text text-center"> {{ per.4 }}</p>
+        <p class="card-text text-center"> {{ per.3 }}</p>
+        <p class="card-text text-center"> {{ per.6 }}</p>
+    {% endfor %}
+{% endblock %}
