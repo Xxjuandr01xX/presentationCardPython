@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }}</title>
+    <link rel="stylesheet"type="text/css" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='icons/css/all.min.css') }}">
+    <script type="text/javascript" src="{{ url_for('static', filename='icons/js/all.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='jquery.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/bootstrap.min.js')}}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/bootstrap.bundle.min.js')}}"></script>
+    <style type="text/css">
+        body {
+            background: #141E30;  /* fallback for old browsers */
+            background: -webkit-linear-gradient(to right, #243B55, #141E30);  /* Chrome 10-25, Safari 5.1-6 */
+            background: linear-gradient(to right, #243B55, #141E30); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+        }
+    </style>
+</head>
+<body>
+    <!--Formulario de inicio de session-->
+    <div class="row clearfix d-flex justify-content-center mt-4">
+        <div class="col-md-6 col-sm-8">
+            <!--Carta donde se colocaran los campos-->
+            <div class="card  rounded-0 shadows p-3">
+                <h5 class="card-header text-center border border-top-0">{{ header }}</h5>
+                <div class="card-body">
+                    <!--Inicio del formulario de inicio de session-->
+                    <form action="/loginuser" method="POST">
+                        <div class="row clearfix d-flex justify-content-center">
+                            <div class="col-md-8">
+                                <div class="input-group mb-3">
+                                    <label class="input-group-text" id="basic-addon1"><span class="fa fa-user"></span></label>
+                                    <input type="text" class="form-control" placeholder="Username" name="usr">
+                                </div>  
+                            </div>
+                        </div>
+
+                        <div class="row clearfix d-flex justify-content-center">
+                            <div class="col-md-8">
+                                <div class="input-group mb-3">
+                                    <label class="input-group-text" id="basic-addon1"><span class="fa fa-lock"></span></label>
+                                    <input type="password" class="form-control" placeholder="Password" name="pwd">
+                                </div>  
+                            </div>
+                        </div>
+
+                        <div class="row clearfix d-flex justify-content-center mt-4">
+                            <div class="col-md-8 d-flex justify-content-center">
+                                <button type="button" class="btn btn-primary">
+                                    <span class="fa fa-sign-in-alt"></span>
+                                    Ingresar
+                                </button>  
+                            </div>
+                        </div>
+                    </form>
+                    <!--Fin del formulario-->
+                </div>
+              </div>
+        </div>
+    </div>
+</body>
+</html>

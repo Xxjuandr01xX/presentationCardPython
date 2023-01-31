@@ -1,6 +1,7 @@
 from flask import Flask, render_template
 from flask_mysqldb import MySQL
 from module import funciones
+import requests
 
 app = Flask(__name__)
 ##Mysql params
@@ -22,7 +23,18 @@ def home():
 
 @app.route("/administrador")
 def admin():
-    ## Pagina para inicio de Session en Administrador
+    ## Inicio de session de administrador
+    return render_template('login.html', title="Carta de presentacion", header="INICIAR SESSION")
+
+@app.route("/loginuser", methods=['POST'])
+def loginuser():
+    #Funcion para validar datos de formulario de inicio de session.
+    username = requests.form('usr')
+    password = requests.form('pwd')
+    cursor = mysql.connection.cursor()
+    cursor.execute("SELECT * FROM py_userse WHERE username='{}' AND passwd=PASSWORD('{}')".format(username, password))
+    data = cursor.fetchall()
     pass
+
 if __name__ == "__main__":
     app.run(port=3000, debug=True)
