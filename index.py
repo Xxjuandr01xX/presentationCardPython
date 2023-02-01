@@ -1,7 +1,7 @@
 from flask import Flask, render_template
 from flask_mysqldb import MySQL
-from module import funciones
-import requests
+from module.funciones import *
+from flask import request
 
 app = Flask(__name__)
 ##Mysql params
@@ -29,12 +29,24 @@ def admin():
 @app.route("/loginuser", methods=['POST'])
 def loginuser():
     #Funcion para validar datos de formulario de inicio de session.
-    username = requests.form('usr')
-    password = requests.form('pwd')
-    cursor = mysql.connection.cursor()
-    cursor.execute("SELECT * FROM py_userse WHERE username='{}' AND passwd=PASSWORD('{}')".format(username, password))
-    data = cursor.fetchall()
-    pass
+    if request.method == 'POST':
+        username = request.form['usr']
+        password = request.form['pwd']
+        if string_null(username) != False and string_null(password) != False:
+            cursor = mysql.connection.cursor()
+            cursor.execute("SELECT * FROM py_userse WHERE username='{}' AND passwd=PASSWORD('{}')".format(username, password))
+            data = cursor.fetchall()
+            if len(data) > 0:
+                return "Esto ya funciono !!"
+            elif len(data) > 1:
+                return "NULL"
+            else:
+                return render_template('login.html', mensage="Error al ingresar los datos, intente nuevamente. !!")
+        else:
+            return render_template('login.html', mensage="Asegurece de llenar los campo. !!")
+    else:
+        return "NULL"
+
 
 if __name__ == "__main__":
     app.run(port=3000, debug=True)
