@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet"type="text/css" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='icons/css/all.min.css') }}">
+    <script type="text/javascript" src="{{ url_for('static', filename='icons/js/all.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='jquery.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/bootstrap.min.js')}}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/bootstrap.bundle.min.js')}}"></script>
+    <style type="text/css">
+        body {
+            background: #141E30;  /* fallback for old browsers */
+            background: -webkit-linear-gradient(to right, #243B55, #141E30);  /* Chrome 10-25, Safari 5.1-6 */
+            background: linear-gradient(to right, #243B55, #141E30); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row clearfix mb-2 bg-light">
+            <div class="col-md-2 col-sm-3 text-center">
+                <strong>TL</strong>
+            </div>
+
+            <div class="col-md-10 d-flex justify-content-end">
+                <nav class="nav navbar">
+                    {% block navbarmenu %}
+                    {% endblock %}
+                    <div class="nav-item">
+                        <a href="/logout" class="nav-link">
+                            salir
+                        </a>
+                    </div>
+                </nav>
+            </div>
+        </div>
+
+        <div class="row clearfix mt-4 d-flex justify-content-center">
+            <div class="col-md-10">
+                <div class="card">
+                    <div class="card-header text-center">
+                        
+                        {% block pagetitle %}{% endblock %}
+                        
+                    </div>
+                    <div class="card-body">
+                        {% block content %}
+                        {% endblock %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% block endpage %}
+    {% endblock %}
+</body>
+</html>

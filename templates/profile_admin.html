@@ -1,0 +1,90 @@
+{% extends 'layout_dashboard.html' %}
+
+{% block navbarmenu %}
+    <div class="nav-item">
+        <a href="/profile" class="nav-link">
+            Perfil
+        </a>
+    </div>
+    <div class="nav-item">
+        <a href="/menus" class="nav-link">
+            Menus
+        </a>
+    </div>
+    <div class="nav-item">
+        <a href="/slider" class="nav-link">
+            Slider
+        </a>
+    </div>
+    <div class="nav-item">
+        <a href="/post" class="nav-link">
+            Posts
+        </a>
+    </div>  
+{% endblock %}
+
+{% block pagetitle %}
+    <h3 class="text-center">
+        <span class="fa fa-user"></span>
+        Perfil
+    </h3>
+{% endblock %}
+
+{% block content %}
+    <form action="/update_profile/{{id}}" method="POST">
+        {% for data in profile %}
+        <div class="row clearfix d-flex justify-content-center">
+            <div class="col-md-4 col-sm-4">
+                <div class="input-group mb-3">
+                    <input type="text" name = "nom" value = "{{ data.1 }}" class="form-control" placeholder="Nombre">
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-4">
+                <div class="input-group mb-3">
+                    <input type="text" name = "ape" value = "{{ data.2 }}" class="form-control" placeholder="Apellido">
+                </div>
+            </div>
+        </div>
+        <div class="row clearfix d-flex justify-content-center">
+            <div class="col-md-4 col-sm-4">
+                <div class="input-group mb-3">
+                    <input type="text" name = "mail" value = "{{ data.3 }}" class="form-control" placeholder="Correo">
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-4">
+                <div class="input-group mb-3">
+                    <input type="text" name = "telf" value = "{{ data.4 }}" class="form-control" placeholder="Telefono">
+                </div>
+            </div>
+        </div>
+        <div class="row clearfix d-flex justify-content-center">
+            <div class="col-md-4 col-sm-4">
+                <div class="input-group mb-3">
+                    <input type="text" name = "prof" value = "{{ data.5 }}" class="form-control" placeholder="Profesion">
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-4">
+                <div class="input-group mb-3">
+                    <input type="text" name = "fec_nac" value = "{{ data.7 }}" class="form-control" placeholder="Fecha de Nacimiento">
+                </div>
+            </div>
+            <div class="row clearfix d-flex justify-content-center">
+                <div class="col-md-8 col-sm-8">
+                    <textarea name="dir" class = "form-control" cols="30" rows="10">
+                        {{ data.6 }}
+                    </textarea>
+                </div>
+            </div>
+            <div class="row clearfix d-flex justify-content-center mt-5">
+                <div class="col-md-8 col-sm-8">
+                    <button type = "submit" class="btn btn-primary w-100 rounded-0">
+                        <span class="fa fa-edit"></span>
+                        Actualizar Perfil
+                    </button>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </form>
+{% endblock %}
+

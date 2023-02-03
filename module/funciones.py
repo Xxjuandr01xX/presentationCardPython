@@ -7,3 +7,5 @@ def string_null(string):
         return False
     else:
         return string
+
+    

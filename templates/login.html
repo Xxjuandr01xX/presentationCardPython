@@ -24,13 +24,15 @@
     <div class="row clearfix d-flex justify-content-center mt-4">
         <div class="col-md-6 col-sm-8">
             <!--Carta donde se colocaran los campos-->
-            {% if mensage == null %}
-
-            {% else %}
-                <div class="alert alert-danger" role="alert">
-                    {{ mensage }}
-                </div>
-            {% endif %}
+            {% with msg = get_flashed_messages() %}
+                {% if msg  %}
+                    {% for ms in msg %}
+                        <div class="alert alert-danger" role="alert">
+                            {{ ms }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
             <div class="card  rounded-0 shadows p-3">
                 <h5 class="card-header text-center border border-top-0">{{ header }}</h5>
                 <div class="card-body">
