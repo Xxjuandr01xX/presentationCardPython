@@ -2,9 +2,13 @@ from flask import Flask, render_template, redirect, url_for, flash, session
 from flask_mysqldb import MySQL
 from module.funciones import *
 from flask import request
+from werkzeug.utils import secure_filename
+from os import remove
+import os
 
 app = Flask(__name__)
 app.secret_key = "mysecretkey"
+app.config["UPLOAD_FOLDER"] = "static/img/slides"
 ##Mysql params
 app.config["MYSQL_HOST"] = "localhost"
 app.config["MYSQL_USER"] = "root"
@@ -19,7 +23,10 @@ def home():
     cursor = mysql.connection.cursor()
     cursor.execute("SELECT * FROM py_profile_person WHERE id=1")
     data = cursor.fetchall()
-    return render_template('home.html', perfil=data)
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT * FROM py_slides")
+    s = cur.fetchall()
+    return render_template('home.html', perfil=data, slides=s)
 
 @app.route("/administrador")
 def admin():
@@ -97,21 +104,52 @@ def slider():
     ##Listado de imagenes para el carrusell de la pagina principal
     if session["id_person"]:
         cur = mysql.connection.cursor()
-        cur.execute("SELECT * FROM py_slider")
+        cur.execute("SELECT * FROM py_slides")
         mysql.connection.commit()
         data = cur.fetchall()
         return render_template("sliders_list.html", slider=data)
 
-@app.route("/del_slider/<string:id>")
-def del_slider(id):
+@app.route("/del_slide/<string:id>")
+def del_slide(id):
     ## Funcion para eliminar una imagen del slider.
     if session["id_person"]:
         cur = mysql.connection.cursor()
-        cur.execute("DELETE FROM py_slider WHERE id={}".format(id))
+        cur.execute("SELECT * FROM py_slides WHERE id={}".format(id))
+        data = cur.fetchall()
+        for img in data:
+            remove(img[2])
+        cur2 = mysql.connection.cursor()
+        query = cur2.execute("DELETE FROM py_slides WHERE id={}".format(id))
         mysql.connection.commit()
-        flash("El slider ha sido Eliminaro Exitosamente")
-        return redirect(url_for("slider"))
+        if query:
+            flash("Slide Eliminado Exitosamente !!")
+            return redirect(url_for("slides"))
 
+@app.route("/add_slider")
+def add_slider():
+    ## Formulario para registrar una nueva imagen para el slider.
+    if session["id_person"]:
+        return render_template("add_slider.html")
+
+@app.route("/save_slides", methods=["POST"])
+def save_slides():
+    ## para guardar una imegen dentro del server y la db.
+    if session["id_person"]:
+        if request.method == "POST":
+            file = request.files["f_content"]
+            filename = secure_filename(file.filename)
+            if filename == "":
+                flash("Debe de cargar una imagen para continuar.")
+                redirect(url_for("slider"))
+            else:
+                path_img = app.config["UPLOAD_FOLDER"]+"/"+filename
+                cur = mysql.connection.cursor()
+                titulo_archivo = request.form["f_name"]
+                cur.execute("INSERT INTO py_slides (id, title, dir_image)values(NULL,'{}','{}')".format(titulo_archivo, path_img))
+                mysql.connection.commit()
+                file.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))
+                flash("Imagen agregada exitosamente !!")
+                return redirect(url_for("slider"))
 
 
 if __name__ == "__main__":

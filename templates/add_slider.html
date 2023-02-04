@@ -1,0 +1,57 @@
+{% extends 'layout_dashboard.html' %}
+
+{% block navbarmenu %}
+    <div class="nav-item">
+        <a href="/profile" class="nav-link">
+            Perfil
+        </a>
+    </div>
+    <div class="nav-item">
+        <a href="/slider" class="nav-link">
+            Slider
+        </a>
+    </div> 
+{% endblock %}
+
+{% block pagetitle %}
+    <h3 class="text-center">
+        <span class="fa fa-user"></span>
+        Add image
+    </h3>
+{% endblock %}
+
+{% block mensage %}
+    {% with msg = get_flashed_messages() %}
+        {% if msg %}
+            <div class="alert" role="alert">
+               {{ msg }}
+            </div>
+        {% endif %}
+    {% endwith %}
+{% endblock %}
+
+{% block content %}
+    <form action="/save_slides" enctype="multipart/form-data" method="POST">
+        <div class="row clearfix mt-3 mb-3 d-flex justify-content-center">
+            <div class="col-md-8">
+                <div class="input-group">
+                    <label for="" class="input-group-text">
+                        <span class="fa fa-list"></span>
+                    </label>
+                    <input type="text" name="f_name" id="f_name" class="form-control">
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="input-group">
+                    <label for="" class="input-group-text"></label>
+                    <input type="file" name="f_content" id="f_content" class="form-control">
+                </div>
+            </div>
+        </div>
+        <div class="row clearfix mt-3 mb-3 d-flex justify-content-center">
+            <div class="col-md-4">
+                <button type="submit" class="btn btn-primary rounded-0 w-100"> <span class="fa fa-plus"></span> Agregar imagen</button>
+            </div>
+        </div>
+    </form>
+{% endblock %}

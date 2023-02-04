@@ -1,5 +1,13 @@
 {% extends 'index_profile.html' %}
 
+{% block carrousel %}
+    {% for sli in slides %}
+        <div class="carousel-item active">
+            <img src="{{ sli.2 }}" class="d-block w-100" alt="{{ sli.1 }}" height="300">
+        </div>
+    {% endfor %}
+{% endblock %}
+
 {% block content %}
     {% for per in perfil %}
         <h5 class="card-title text-center">{{ per.1 }} {{ per.2 }}</h5>
