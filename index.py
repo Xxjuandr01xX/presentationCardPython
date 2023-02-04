@@ -54,6 +54,7 @@ def loginuser():
     else:
         return "NULL"
 
+##PERFIL
 @app.route("/profile")
 def profile():
     ## pagina donde se define el perfil del profesional.
@@ -69,13 +70,13 @@ def update_profile(id):
     if session["id_person"]:
         ##agregar validaciondes y mensajes.
         person_id = id
-        nom  = request.form['nom']
-        ape  = request.form['ape']
-        mail = request.form['mail']
-        telf = request.form['telf']
-        prof = request.form['prof']
-        fec  = request.form['fec_nac']
-        dire = request.form['dir']
+        nom  = request.form['nom'] 
+        ape  = request.form['ape'] 
+        mail = request.form['mail'] 
+        telf = request.form['telf'] 
+        prof = request.form['prof'] 
+        fec  = request.form['fec_nac'] 
+        dire = request.form['dir'] 
         cur = mysql.connection.cursor()
         cur.execute('''UPDATE py_profile 
                         SET nombre={},
@@ -87,7 +88,30 @@ def update_profile(id):
                             fec_nac={}
                         WHERE id={} '''.format(nom, ape, mail, telf, prof, dire, fec, person_id))
         mysql.connection.commit()
-        
+        flash("Perfil actualizado de manera exitosa !!")
+        return redirect(url_for("profile"))
+
+##Slider
+@app.route("/slider")
+def slider():
+    ##Listado de imagenes para el carrusell de la pagina principal
+    if session["id_person"]:
+        cur = mysql.connection.cursor()
+        cur.execute("SELECT * FROM py_slider")
+        mysql.connection.commit()
+        data = cur.fetchall()
+        return render_template("sliders_list.html", slider=data)
+
+@app.route("/del_slider/<string:id>")
+def del_slider(id):
+    ## Funcion para eliminar una imagen del slider.
+    if session["id_person"]:
+        cur = mysql.connection.cursor()
+        cur.execute("DELETE FROM py_slider WHERE id={}".format(id))
+        mysql.connection.commit()
+        flash("El slider ha sido Eliminaro Exitosamente")
+        return redirect(url_for("slider"))
+
 
 
 if __name__ == "__main__":
