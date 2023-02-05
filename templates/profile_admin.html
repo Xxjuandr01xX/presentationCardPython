@@ -3,11 +3,13 @@
 {% block navbarmenu %}
     <div class="nav-item">
         <a href="/profile" class="nav-link">
+            <span class="fa fa-user"></span>
             Perfil
         </a>
     </div>
     <div class="nav-item">
         <a href="/slider" class="nav-link">
+            <span class="fa fa-film"></span>
             Slider
         </a>
     </div>
@@ -23,7 +25,7 @@
 {% block mensage %}
     {% with msg = get_flashed_messages() %}
         {% if msg %}
-            <div class="alert" role="alert">
+            <div class="alert alert-primary" role="alert">
                {{ msg }}
             </div>
         {% endif %}
@@ -36,11 +38,13 @@
         <div class="row clearfix d-flex justify-content-center">
             <div class="col-md-4 col-sm-4">
                 <div class="input-group mb-3">
+                    <label for="" class="input-group-text"><span class="fa fa-person"></span></label>
                     <input type="text" name = "nom" value = "{{ data.1 }}" class="form-control" placeholder="Nombre">
                 </div>
             </div>
             <div class="col-md-4 col-sm-4">
                 <div class="input-group mb-3">
+                    <label for="" class="input-group-text"><span class="fa fa-person"></span></label>
                     <input type="text" name = "ape" value = "{{ data.2 }}" class="form-control" placeholder="Apellido">
                 </div>
             </div>
@@ -48,11 +52,13 @@
         <div class="row clearfix d-flex justify-content-center">
             <div class="col-md-4 col-sm-4">
                 <div class="input-group mb-3">
+                    <label for="" class="input-group-text"><span class="fa fa-envelope"></span></label>
                     <input type="text" name = "mail" value = "{{ data.3 }}" class="form-control" placeholder="Correo">
                 </div>
             </div>
             <div class="col-md-4 col-sm-4">
                 <div class="input-group mb-3">
+                    <label for="" class="input-group-text"><span class="fa fa-phone"></span></label>
                     <input type="text" name = "telf" value = "{{ data.4 }}" class="form-control" placeholder="Telefono">
                 </div>
             </div>
@@ -60,19 +66,24 @@
         <div class="row clearfix d-flex justify-content-center">
             <div class="col-md-4 col-sm-4">
                 <div class="input-group mb-3">
+                    <label for="" class="input-group-text"><span class="fa fa-briefcase"></span></label>
                     <input type="text" name = "prof" value = "{{ data.5 }}" class="form-control" placeholder="Profesion">
                 </div>
             </div>
             <div class="col-md-4 col-sm-4">
                 <div class="input-group mb-3">
-                    <input type="text" name = "fec_nac" value = "{{ data.7 }}" class="form-control" placeholder="Fecha de Nacimiento">
+                    <label for="" class="input-group-text"><span class="fa fa-calendar"></span></label>
+                    <input type="text" name = "fec_nac" id = "fec_nac" value = "{{ data.7.strftime('%d/%m/%Y') }}" class="form-control" placeholder="Fecha de Nacimiento">
                 </div>
             </div>
             <div class="row clearfix d-flex justify-content-center">
                 <div class="col-md-8 col-sm-8">
-                    <textarea name="dir" class = "form-control" cols="30" rows="10">
-                        {{ data.6 }}
-                    </textarea>
+                    <div class="input-group">
+                        <label for="" class="input-group-text"><span class="fa fa-list"></span></label>
+                        <textarea name="dir" class = "form-control" cols="30" rows="10">
+                            {{ data.6 }}
+                        </textarea>
+                    </div>
                 </div>
             </div>
             <div class="row clearfix d-flex justify-content-center mt-5">
@@ -86,5 +97,45 @@
         </div>
         {% endfor %}
     </form>
+{% endblock %}
+
+{% block endpage %}
+    <script type="text/javascript" src="{{ url_for('static', filename='inputmask/dist/jquery.inputmask.min.js') }}"></script>
+    <script type="text/javascript">
+        let display_bootstrap_alert = (type, msg) =>{
+            /**
+             *  Funcion para desplegar mensajes de alerta 
+             **/
+        };
+       
+        $(document).ready(() => {
+            /**
+             * Blocke para validaciones de campos de texto 
+             **/
+
+             $("input[name='telf']").inputmask({
+                "mask" : "(999)-9999999"
+             });
+
+             $("input[name='fec_nac']").inputmask({
+                "mask" : "99/99/9999"
+             });
+
+             $("input[name='mail']").inputmask({
+                mask: "*{1,20}[.*{1,20}][.*{1,20}][.*{1,20}]@*{1,20}[.*{2,6}][.*{1,2}]",
+                greedy: false,
+                onBeforePaste: function (pastedValue, opts) {
+                    pastedValue = pastedValue.toLowerCase();
+                    return pastedValue.replace("mailto:", "");
+                },
+                definitions: {
+                    '*': {
+                        validator: "[0-9A-Za-z!#$%&'*+/=?^_`{|}~\-]",
+                         casing: "lower"
+                    }
+                }
+             });
+        });
+    </script>
 {% endblock %}
 

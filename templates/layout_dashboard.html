@@ -24,11 +24,14 @@
     <div class="container-fluid">
         <div class="row clearfix mb-2 bg-light">
             <div class="col-md-2 col-sm-3 text-center">
-                <strong>TL</strong>
+                <a href="/profile" class="text-dark" style="text-decoration: none;">
+                    <img class = "image-fluid" src="{{ url_for('static', filename='img/icons/python_icon.png') }}">
+                   <b>Admin Panel</b> 
+                </a>
             </div>
 
             <div class="col-md-10 d-flex justify-content-end">
-                <nav class="nav navbar">
+                <nav class="nav navbar text-dark">
                     {% block navbarmenu %}
                     {% endblock %}
                     <div class="nav-item">

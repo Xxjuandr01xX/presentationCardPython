@@ -15,3 +15,8 @@ def allowed_extensions(filename):
         return True
     else:
         return False
+
+def date_to_sql(date):
+    ## para convertir el formato de fecha a formato sql
+    convert = date.split("/")
+    return "{}-{}-{}".format(convert[2], convert[1], convert[0])

@@ -74,29 +74,52 @@ def profile():
 
 @app.route("/update_profile/<string:id>", methods=["POST"])
 def update_profile(id):
+    ## Funcion para actualizar informacion de perfil de usuario
     if session["id_person"]:
-        ##agregar validaciondes y mensajes.
-        person_id = id
-        nom  = request.form['nom'] 
-        ape  = request.form['ape'] 
-        mail = request.form['mail'] 
-        telf = request.form['telf'] 
-        prof = request.form['prof'] 
-        fec  = request.form['fec_nac'] 
-        dire = request.form['dir'] 
-        cur = mysql.connection.cursor()
-        cur.execute('''UPDATE py_profile 
-                        SET nombre={},
-                            apellido={},
-                            correo={},
-                            telefono={},
-                            profesion={},
-                            direccion={},
-                            fec_nac={}
-                        WHERE id={} '''.format(nom, ape, mail, telf, prof, dire, fec, person_id))
-        mysql.connection.commit()
-        flash("Perfil actualizado de manera exitosa !!")
-        return redirect(url_for("profile"))
+        if request.method == "POST":
+            nom  = request.form['nom'] 
+            ape  = request.form['ape'] 
+            mail = request.form['mail'] 
+            telf = request.form['telf'] 
+            prof = request.form['prof'] 
+            fec  = date_to_sql(request.form['fec_nac']) 
+            dire = request.form['dir']
+            ##Validaciones de campos de texto
+            if nom == "":
+                flash("Asegurece de agregar su nombre !")
+                return redirect(url_for("/profile"))
+            elif ape == "":
+                flash("Asegurece de agregar su apellido !")
+                return redirect(url_for("/profile"))
+            elif mail == "":
+                flash("Asegurece de agregar su correo electronico !")
+                return redirect(url_for("/profile"))
+            elif telf == "":
+                flash("Asegurece de agregar su telefono !")
+                return redirect(url_for("/profile"))
+            elif prof == "":
+                flash("Asegurece de agregar su profesion !")
+                return redirect(url_for("/profile"))
+            elif fec == "":
+                flash("Asegurece de agregar su Fecha de necimiento !")
+                return redirect(url_for("/profile"))
+            elif dire == "":
+                flash("Asegurece de agregar su Direccion !")
+                return redirect(url_for("/profile"))
+            else:
+                cur = mysql.connection.cursor()
+                cur.execute('''UPDATE py_profile_person 
+                                SET nombre='{}',
+                                    apellido='{}',
+                                    correo='{}',
+                                    telefono='{}',
+                                    profesion='{}',
+                                    direccion='{}',
+                                    fec_nac='{}'
+                                WHERE id={} '''.format(nom, ape, mail, telf, prof, dire, fec, id))
+                mysql.connection.commit()
+                flash("Perfil actualizado de manera exitosa !!")
+                return redirect(url_for("profile"))
 
 ##Slider
 @app.route("/slider")
@@ -150,7 +173,11 @@ def save_slides():
                 file.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))
                 flash("Imagen agregada exitosamente !!")
                 return redirect(url_for("slider"))
-
+@app.route("/logout")
+def logout():
+    ## Funcion para cerrar session
+    session.clear()
+    return redirect(url_for("home"))
 
 if __name__ == "__main__":
     app.run(port=3000, debug=True)
